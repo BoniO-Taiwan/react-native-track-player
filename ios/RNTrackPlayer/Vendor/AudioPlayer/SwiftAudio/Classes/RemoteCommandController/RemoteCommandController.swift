@@ -27,6 +27,7 @@ public class RemoteCommandController {
      */
     public init(remoteCommandCenter: MPRemoteCommandCenter = MPRemoteCommandCenter.shared()) {
         self.center = remoteCommandCenter
+        self.disable(commands: RemoteCommand.all())
     }
     
     internal func enable(commands: [RemoteCommand]) {
