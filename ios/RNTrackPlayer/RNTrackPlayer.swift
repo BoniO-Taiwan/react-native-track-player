@@ -69,6 +69,7 @@ public class RNTrackPlayer: RCTEventEmitter {
             "CAPABILITY_LIKE": Capability.like.rawValue,
             "CAPABILITY_DISLIKE": Capability.dislike.rawValue,
             "CAPABILITY_BOOKMARK": Capability.bookmark.rawValue,
+            "CAPABILITY_TOGGLE_PLAY_PAUSE": Capability.togglePlayPause.rawValue,
         ]
     }
     
