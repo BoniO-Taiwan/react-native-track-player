@@ -69,6 +69,7 @@ public class RNTrackPlayer: RCTEventEmitter {
             "CAPABILITY_LIKE": Capability.like.rawValue,
             "CAPABILITY_DISLIKE": Capability.dislike.rawValue,
             "CAPABILITY_BOOKMARK": Capability.bookmark.rawValue,
+            "CAPABILITY_TOGGLE_PLAY_PAUSE": Capability.togglePlayPause.rawValue,
         ]
     }
     
@@ -287,7 +288,13 @@ public class RNTrackPlayer: RCTEventEmitter {
         hasInitialized = true
         resolve(NSNull())
     }
-    
+
+    @objc(isServiceRunning:rejecter:)
+    public func isServiceRunning(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+        // TODO That is probably always true
+        resolve(player != nil)
+    }
+
     @objc(destroy)
     public func destroy() {
         print("Destroying player")
@@ -298,14 +305,12 @@ public class RNTrackPlayer: RCTEventEmitter {
         let capabilitiesStr = options["capabilities"] as? [String]
         let capabilities = capabilitiesStr?.compactMap { Capability(rawValue: $0) } ?? []
         
-        let remoteCommands = capabilities.map { capability in
+        player.remoteCommands = capabilities.map { capability in
             capability.mapToPlayerCommand(jumpInterval: options["jumpInterval"] as? NSNumber,
                                           likeOptions: options["likeOptions"] as? [String: Any],
                                           dislikeOptions: options["dislikeOptions"] as? [String: Any],
                                           bookmarkOptions: options["bookmarkOptions"] as? [String: Any])
         }
-
-        player.enableRemoteCommands(remoteCommands)
         
         resolve(NSNull())
     }
